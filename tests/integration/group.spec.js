@@ -48,10 +48,10 @@ describe('Testing GroupsController', () => {
 
   it('should update a group information', async () => {
     const group = await request(app)
-      .get('/groups/3')
+      .get('/groups/1')
 
     const updatedGroup = await request(app)
-      .put('/groups/3')
+      .put('/groups/1')
       .send({
         name: 'Group Updated',
         description: 'Description Updated',
@@ -61,17 +61,17 @@ describe('Testing GroupsController', () => {
         qtt_meetings: 20
       })
 
-    expect(group.body.name).toBe('Group test')
+    expect(group.body.name).toBe('Group Test')
     expect(updatedGroup.body.name).toBe('Group Updated')
     expect(group.body.id.toString()).toBe(updatedGroup.body.id.toString())
   })
 
   it('should delete a group', async () => {
     const deletedGroup = await request(app)
-      .delete('/groups/3')
+      .delete('/groups/1')
 
     const group = await request(app)
-      .get('/groups/3')
+      .get('/groups/1')
 
     expect(deletedGroup.status).toBe(204)
     expect(group.body).toHaveProperty('error')
