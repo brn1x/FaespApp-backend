@@ -4,7 +4,8 @@ class Student extends Model {
   static init (sequelize) {
     super.init({
       ra: DataTypes.STRING,
-      name: DataTypes.STRING
+      name: DataTypes.STRING,
+      password: DataTypes.STRING
     }, {
       sequelize
     })

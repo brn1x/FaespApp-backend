@@ -3,7 +3,7 @@ const Student = require('../models/Student')
 module.exports = {
   async index (req, res) {
     const students = await Student.findAll({
-      attributes: ['ra', 'name']
+      attributes: ['ra', 'name', 'password']
     })
 
     return res.json(students)
@@ -25,9 +25,9 @@ module.exports = {
   },
 
   async store (req, res) {
-    const { ra, name } = req.body
+    const { ra, name, password } = req.body
 
-    const student = await Student.create({ ra, name })
+    const student = await Student.create({ ra, name, password })
 
     return res.json(student)
   },
@@ -35,7 +35,7 @@ module.exports = {
   async update (req, res) {
     const { id } = req.params
 
-    const { ra, name } = req.body
+    const { ra, name, password } = req.body
 
     const student = await Student.findByPk(id)
 
@@ -52,7 +52,7 @@ module.exports = {
         error: 'Internal server error'
       })
     }
-    await student.update({ name })
+    await student.update({ name, password })
 
     return res.json(student)
   },

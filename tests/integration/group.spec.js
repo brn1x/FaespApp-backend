@@ -3,6 +3,17 @@ const app = require('../../src/app')
 
 describe('Testing GroupsController', () => {
   it('should create a new Group', async () => {
+    await request(app)
+      .post('/groups')
+      .send({
+        name: 'Group fixed',
+        description: 'Test fixed',
+        category: 'Test fixed',
+        qtt_min_students: 0,
+        qtt_max_students: 0,
+        qtt_meetings: 10
+      })
+
     const group = await request(app)
       .post('/groups')
       .send({
@@ -14,15 +25,16 @@ describe('Testing GroupsController', () => {
         qtt_meetings: 10
       })
 
+    expect(group.status).toBe(200)
     expect(group.body).toHaveProperty('name')
   })
 
   it('should update a group information', async () => {
     const group = await request(app)
-      .get('/groups/1')
+      .get('/groups/2')
 
     const updatedGroup = await request(app)
-      .put('/groups/1')
+      .put('/groups/2')
       .send({
         name: 'Group Updated',
         description: 'Description Updated',
@@ -40,10 +52,10 @@ describe('Testing GroupsController', () => {
 
   it('should delete a group', async () => {
     const deletedGroup = await request(app)
-      .delete('/groups/1')
+      .delete('/groups/2')
 
     const group = await request(app)
-      .get('/groups/1')
+      .get('/groups/2')
 
     expect(deletedGroup.status).toBe(204)
     expect(group.body).toHaveProperty('error')
@@ -68,6 +80,6 @@ describe('Testing GroupsController', () => {
       .get('/groups')
 
     expect(groups.body[0]).toHaveProperty('name')
-    expect(groups.body).toHaveLength(3)
+    expect(groups.body).toHaveLength(4)
   })
 })
