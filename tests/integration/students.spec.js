@@ -3,14 +3,6 @@ const app = require('../../src/app')
 
 describe('Testing StudentsController', () => {
   it('should create a new Student', async () => {
-    await request(app)
-      .post('/students')
-      .send({
-        ra: '00000000000',
-        name: 'Student fixed',
-        password: 'fixed'
-      })
-
     const student = await request(app)
       .post('/students')
       .send({

@@ -1,6 +1,7 @@
 const express = require('express')
 const GroupController = require('./controllers/GroupController')
 const StudentController = require('./controllers/StudentController')
+const SessionController = require('./controllers/SessionController')
 
 const routes = express.Router()
 
@@ -19,5 +20,7 @@ routes.post('/students', StudentController.store)
 routes.get('/students/:id', StudentController.findById)
 routes.put('/students/:id', StudentController.update)
 routes.delete('/students/:id', StudentController.delete)
+
+routes.post('/session', SessionController.create)
 
 module.exports = routes
