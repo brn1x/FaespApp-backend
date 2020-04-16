@@ -3,17 +3,6 @@ const app = require('../../src/app')
 
 describe('Testing GroupsController', () => {
   it('should create a new Group', async () => {
-    await request(app)
-      .post('/groups')
-      .send({
-        name: 'Group fixed',
-        description: 'Test fixed',
-        category: 'Test fixed',
-        qtt_min_students: 0,
-        qtt_max_students: 0,
-        qtt_meetings: 10
-      })
-
     const group = await request(app)
       .post('/groups')
       .send({

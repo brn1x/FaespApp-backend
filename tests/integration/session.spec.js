@@ -3,14 +3,6 @@ const app = require('../../src/app')
 
 describe('Testing SessionController', () => {
   it('should create a new session (LOGIN)', async () => {
-    await request(app)
-      .post('/students')
-      .send({
-        ra: '00000000000',
-        name: 'Student fixed',
-        password: 'fixed'
-      })
-
     const login = await request(app)
       .post('/session')
       .send({

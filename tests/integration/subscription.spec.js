@@ -1,13 +1,13 @@
 const request = require('supertest')
 const app = require('../../src/app')
 
-describe('Testing SubscribeController', () => {
+describe('Testing SubscriptionController', () => {
   it('should be able to subscribe to a group', async () => {
     const student = await request(app)
-      .get('/student/1')
+      .get('/students/1')
 
     const subscribe = await request(app)
-      .post('/subscribe/1')
+      .post('/subscription/1')
       .send({
         ra: student.body.ra
       })
@@ -21,10 +21,10 @@ describe('Testing SubscribeController', () => {
 
   it('should be able to unsubscribe a group', async () => {
     const student = await request(app)
-      .get('/student/1')
+      .get('/students/1')
 
     const unsubscribe = await request(app)
-      .delete('/unsubscribe/1')
+      .delete('/subscription/1')
       .send({
         ra: student.body.ra
       })
