@@ -21,6 +21,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      ra_group_owner: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       qtt_min_students: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -31,6 +35,10 @@ module.exports = {
       },
       qtt_meetings: {
         type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      status: {
+        type: Sequelize.STRING(1),
         allowNull: false
       },
       created_at: {

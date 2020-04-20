@@ -6,9 +6,11 @@ class Group extends Model {
       name: DataTypes.STRING,
       description: DataTypes.STRING,
       category: DataTypes.STRING,
+      ra_group_owner: DataTypes.STRING,
       qtt_min_students: DataTypes.INTEGER,
       qtt_max_students: DataTypes.INTEGER,
-      qtt_meetings: DataTypes.INTEGER
+      qtt_meetings: DataTypes.INTEGER,
+      status: DataTypes.STRING(1)
     }, {
       sequelize
     })
