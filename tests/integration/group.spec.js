@@ -12,8 +12,7 @@ describe('Testing GroupsController', () => {
         ra_group_owner: '12345678900',
         qtt_min_students: 1,
         qtt_max_students: 5,
-        qtt_meetings: 10,
-        status: 'A'
+        qtt_meetings: 10
       })
 
     expect(group.status).toBe(200)
@@ -33,8 +32,7 @@ describe('Testing GroupsController', () => {
         ra_group_owner: '12345678900',
         qtt_min_students: 10,
         qtt_max_students: 10,
-        qtt_meetings: 20,
-        status: 'A'
+        qtt_meetings: 20
       })
 
     expect(group.body.name).toBe('Group Test')
@@ -66,8 +64,7 @@ describe('Testing GroupsController', () => {
           ra_group_owner: '12345678900',
           qtt_min_students: 1,
           qtt_max_students: 5,
-          qtt_meetings: 10,
-          status: 'A'
+          qtt_meetings: 10
         })
     }
 

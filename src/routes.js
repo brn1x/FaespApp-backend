@@ -3,6 +3,7 @@ const GroupController = require('./controllers/GroupController')
 const StudentController = require('./controllers/StudentController')
 const SessionController = require('./controllers/SessionController')
 const SubscriptionController = require('./controllers/SubscriptionController')
+const RequestController = require('./controllers/RequestController')
 
 const routes = express.Router()
 
@@ -26,5 +27,9 @@ routes.post('/session', SessionController.create)
 
 routes.post('/subscription/:id', SubscriptionController.subscribe)
 routes.delete('/subscription/:id', SubscriptionController.unsubscribe)
+
+routes.get('/requests', RequestController.index)
+routes.put('/requests/accept/:id', RequestController.accept)
+routes.put('/requests/decline/:id', RequestController.decline)
 
 module.exports = routes

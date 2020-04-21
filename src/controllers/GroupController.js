@@ -3,7 +3,7 @@ const Group = require('../models/Group')
 module.exports = {
   async index (req, res) {
     const groups = await Group.findAll({
-      attributes: ['name', 'description', 'category', 'ra_group_owner', 'qtt_min_students', 'qtt_max_students', 'qtt_meetings', 'status'],
+      attributes: ['id', 'name', 'description', 'category', 'ra_group_owner', 'qtt_min_students', 'qtt_max_students', 'qtt_meetings', 'status'],
       where: { status: 'A' },
       include: { association: 'students', attributes: ['name'] }
     })
@@ -34,8 +34,7 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings,
-      status
+      qtt_meetings
     } = req.body
 
     const group = await Group.create({
@@ -45,8 +44,7 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings,
-      status
+      qtt_meetings
     })
 
     return res.json(group)
@@ -62,8 +60,7 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings,
-      status
+      qtt_meetings
     } = req.body
 
     const updatedGroup = {
@@ -73,8 +70,7 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings,
-      status
+      qtt_meetings
     }
 
     const group = await Group.findByPk(id)
