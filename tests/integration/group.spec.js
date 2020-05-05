@@ -12,7 +12,10 @@ describe('Testing GroupsController', () => {
         ra_group_owner: '12345678900',
         qtt_min_students: 1,
         qtt_max_students: 5,
-        qtt_meetings: 10
+        qtt_meetings: 10,
+        campus: 'CIC',
+        semester_year: '2020/1',
+        period: 'N'
       })
 
     expect(group.status).toBe(200)
@@ -32,7 +35,10 @@ describe('Testing GroupsController', () => {
         ra_group_owner: '12345678900',
         qtt_min_students: 10,
         qtt_max_students: 10,
-        qtt_meetings: 20
+        qtt_meetings: 20,
+        campus: 'CIC',
+        semester_year: '2020/1',
+        period: 'N'
       })
 
     expect(group.body.name).toBe('Group Test')
@@ -50,7 +56,7 @@ describe('Testing GroupsController', () => {
 
     expect(deletedGroup.status).toBe(204)
     expect(group.body).toHaveProperty('error')
-    expect(group.body.error).toBe('Content not found')
+    expect(group.body.error).toBe('This group have been inactivated')
   })
 
   it('should list all groups', async () => {
@@ -64,7 +70,11 @@ describe('Testing GroupsController', () => {
           ra_group_owner: '12345678900',
           qtt_min_students: 1,
           qtt_max_students: 5,
-          qtt_meetings: 10
+          qtt_meetings: 10,
+          campus: 'CIC',
+          semester_year: '2020/1',
+          period: 'N',
+          status: 'A'
         })
     }
 

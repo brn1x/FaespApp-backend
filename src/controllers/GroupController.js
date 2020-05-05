@@ -3,7 +3,20 @@ const Group = require('../models/Group')
 module.exports = {
   async index (req, res) {
     const groups = await Group.findAll({
-      attributes: ['id', 'name', 'description', 'category', 'ra_group_owner', 'qtt_min_students', 'qtt_max_students', 'qtt_meetings', 'status'],
+      attributes: [
+        'id',
+        'name',
+        'description',
+        'category',
+        'ra_group_owner',
+        'qtt_min_students',
+        'qtt_max_students',
+        'qtt_meetings',
+        'campus',
+        'semester_year',
+        'period',
+        'status'
+      ],
       where: { status: 'A' },
       include: { association: 'students', attributes: ['name'] },
       order: ['id']
@@ -24,6 +37,13 @@ module.exports = {
       })
     }
 
+    if (group.status === 'I') {
+      return res.status(423).json({
+        statusCode: 423,
+        error: 'This group have been inactivated'
+      })
+    }
+
     return res.json(group)
   },
 
@@ -35,7 +55,11 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings
+      qtt_meetings,
+      campus,
+      semester_year,
+      period,
+      status = 'P'
     } = req.body
 
     const group = await Group.create({
@@ -45,7 +69,11 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings
+      qtt_meetings,
+      campus,
+      semester_year,
+      period,
+      status
     })
 
     return res.json(group)
@@ -61,7 +89,10 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings
+      qtt_meetings,
+      campus,
+      semester_year,
+      period
     } = req.body
 
     const updatedGroup = {
@@ -71,7 +102,10 @@ module.exports = {
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
-      qtt_meetings
+      qtt_meetings,
+      campus,
+      semester_year,
+      period
     }
 
     const group = await Group.findByPk(id)

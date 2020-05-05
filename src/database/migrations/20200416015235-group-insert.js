@@ -10,6 +10,10 @@ module.exports = {
       qtt_min_students: 0,
       qtt_max_students: 0,
       qtt_meetings: 10,
+      campus: 'CIC',
+      semester_year: '2020/1',
+      period: 'N',
+      status: 'A',
       created_at: new Date(Date.now()),
       updated_at: new Date(Date.now())
     }])
