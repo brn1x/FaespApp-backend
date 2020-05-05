@@ -30,6 +30,6 @@ routes.delete('/subscription/:id', SubscriptionController.unsubscribe)
 
 routes.get('/requests', RequestController.index)
 routes.put('/requests/accept/:id', RequestController.accept)
-routes.put('/requests/decline/:id', RequestController.decline)
+routes.put('/requests/reject/:id', RequestController.decline)
 
 module.exports = routes

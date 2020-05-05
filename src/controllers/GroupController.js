@@ -5,7 +5,8 @@ module.exports = {
     const groups = await Group.findAll({
       attributes: ['id', 'name', 'description', 'category', 'ra_group_owner', 'qtt_min_students', 'qtt_max_students', 'qtt_meetings', 'status'],
       where: { status: 'A' },
-      include: { association: 'students', attributes: ['name'] }
+      include: { association: 'students', attributes: ['name'] },
+      order: ['id']
     })
 
     return res.json(groups)
@@ -100,7 +101,7 @@ module.exports = {
       })
     }
 
-    await group.destroy()
+    await group.update({ status: 'I', where: { id: id } })
 
     return res.status(204).send()
   }
