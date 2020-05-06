@@ -14,7 +14,7 @@ module.exports = {
         allowNull: false
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: false
       },
       category: {
@@ -37,9 +37,20 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      campus: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      semester_year: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      period: {
+        type: Sequelize.STRING(1),
+        allowNull: false
+      },
       status: {
         type: Sequelize.STRING(1),
-        defaultValue: 'P',
         allowNull: false
       },
       created_at: {

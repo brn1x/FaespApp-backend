@@ -10,6 +10,9 @@ class Group extends Model {
       qtt_min_students: DataTypes.INTEGER,
       qtt_max_students: DataTypes.INTEGER,
       qtt_meetings: DataTypes.INTEGER,
+      campus: DataTypes.STRING,
+      semester_year: DataTypes.STRING,
+      period: DataTypes.STRING(1),
       status: DataTypes.STRING(1)
     }, {
       sequelize

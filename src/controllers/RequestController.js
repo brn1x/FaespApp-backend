@@ -28,7 +28,8 @@ module.exports = {
   async index (req, res) {
     const groups = await Group.findAll({
       attributes: ['id', 'name', 'description', 'category', 'ra_group_owner', 'qtt_min_students', 'qtt_max_students', 'qtt_meetings', 'status'],
-      where: { status: 'P' }
+      where: { status: 'P' },
+      order: ['id']
     })
 
     return res.json(groups)
