@@ -5,7 +5,8 @@ class Student extends Model {
     super.init({
       ra: DataTypes.STRING,
       name: DataTypes.STRING,
-      password: DataTypes.STRING
+      password: DataTypes.STRING,
+      status: DataTypes.STRING
     }, {
       sequelize
     })

@@ -6,6 +6,7 @@ module.exports = {
       ra: '00000000000',
       password: 'fixed',
       name: 'Student fixed',
+      status: 'A',
       created_at: new Date(Date.now()),
       updated_at: new Date(Date.now())
     }])
