@@ -19,7 +19,7 @@ module.exports = {
     const group = await Group.findByPk(id)
 
     group.update({
-      status: 'I'
+      status: 'R'
     })
 
     return res.json(group)
@@ -27,7 +27,20 @@ module.exports = {
 
   async index (req, res) {
     const groups = await Group.findAll({
-      attributes: ['id', 'name', 'description', 'category', 'ra_group_owner', 'qtt_min_students', 'qtt_max_students', 'qtt_meetings', 'status'],
+      attributes: [
+        'id',
+        'name',
+        'description',
+        'category',
+        'ra_group_owner',
+        'qtt_min_students',
+        'qtt_max_students',
+        'qtt_meetings',
+        'campus',
+        'semester_year',
+        'period',
+        'status'
+      ],
       where: { status: 'P' },
       order: ['id']
     })
