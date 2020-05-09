@@ -17,9 +17,10 @@ module.exports = {
         type: Sequelize.STRING(1000),
         allowNull: false
       },
-      category: {
-        type: Sequelize.STRING,
-        allowNull: false
+      category_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: 'categories', key: 'id' }
       },
       ra_group_owner: {
         type: Sequelize.STRING,
@@ -37,13 +38,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      campus: {
-        type: Sequelize.STRING,
-        allowNull: false
+      campus_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: 'campus', key: 'id' }
       },
-      semester_year: {
-        type: Sequelize.STRING,
-        allowNull: false
+      semester_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: 'semesters', key: 'id' }
       },
       period: {
         type: Sequelize.STRING(1),

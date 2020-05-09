@@ -3,7 +3,8 @@ const Student = require('../models/Student')
 module.exports = {
   async index (req, res) {
     const students = await Student.findAll({
-      attributes: ['ra', 'name', 'password']
+      attributes: ['ra', 'name', 'password'],
+      where: { status: 'A' }
     })
 
     return res.json(students)
@@ -12,7 +13,7 @@ module.exports = {
   async findById (req, res) {
     const { id } = req.params
 
-    const student = await Student.findByPk(id)
+    const student = await Student.findOne({ where: { id, status: 'A' } })
 
     if (!student) {
       return res.status(404).json({
@@ -37,7 +38,7 @@ module.exports = {
 
     const { ra, name, password } = req.body
 
-    const student = await Student.findByPk(id)
+    const student = await Student.findOne({ where: { id, status: 'A' } })
 
     if (!student) {
       return res.status(404).json({
@@ -60,7 +61,7 @@ module.exports = {
   async delete (req, res) {
     const { id } = req.params
 
-    const student = await Student.findByPk(id)
+    const student = await Student.findOne({ where: { id, status: 'A' } })
 
     if (!student) {
       return res.status(404).json({
@@ -69,7 +70,7 @@ module.exports = {
       })
     }
 
-    await student.destroy()
+    student.update({ status: 'I' })
 
     return res.status(204).send()
   }

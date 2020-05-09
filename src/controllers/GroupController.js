@@ -7,18 +7,20 @@ module.exports = {
         'id',
         'name',
         'description',
-        'category',
         'ra_group_owner',
         'qtt_min_students',
         'qtt_max_students',
         'qtt_meetings',
-        'campus',
-        'semester_year',
         'period',
         'status'
       ],
       where: { status: 'A' },
-      include: { association: 'students', attributes: ['name'] },
+      include: [
+        { association: 'campus', attributes: ['name'], where: { status: 'A' } },
+        { association: 'semester', attributes: ['name'], where: { status: 'A' } },
+        { association: 'category', attributes: ['name'], where: { status: 'A' } },
+        { association: 'students', attributes: ['name'] }
+      ],
       order: ['id']
     })
 
@@ -28,19 +30,31 @@ module.exports = {
   async findById (req, res) {
     const { id } = req.params
 
-    const group = await Group.findByPk(id)
+    const group = await Group.findOne({
+      attributes: [
+        'id',
+        'name',
+        'description',
+        'ra_group_owner',
+        'qtt_min_students',
+        'qtt_max_students',
+        'qtt_meetings',
+        'period',
+        'status'
+      ],
+      include: [
+        { association: 'campus', attributes: ['name'], where: { status: 'A' } },
+        { association: 'semester', attributes: ['name'], where: { status: 'A' } },
+        { association: 'category', attributes: ['name'], where: { status: 'A' } },
+        { association: 'students', attributes: ['name'] }
+      ],
+      where: { id, status: 'A' }
+    })
 
     if (!group) {
       return res.status(404).json({
         statusCode: 404,
         error: 'Content not found'
-      })
-    }
-
-    if (group.status === 'I') {
-      return res.status(423).json({
-        statusCode: 423,
-        error: 'This group have been inactivated'
       })
     }
 
@@ -51,13 +65,13 @@ module.exports = {
     const {
       name,
       description,
-      category,
+      category_id,
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
       qtt_meetings,
-      campus,
-      semester_year,
+      campus_id,
+      semester_id,
       period,
       status = 'P'
     } = req.body
@@ -65,13 +79,13 @@ module.exports = {
     const group = await Group.create({
       name,
       description,
-      category,
+      category_id,
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
       qtt_meetings,
-      campus,
-      semester_year,
+      campus_id,
+      semester_id,
       period,
       status
     })
@@ -85,30 +99,38 @@ module.exports = {
     const {
       name,
       description,
-      category,
+      category_id,
       ra_group_owner,
       qtt_min_students,
       qtt_max_students,
       qtt_meetings,
-      campus,
-      semester_year,
+      campus_id,
+      semester_id,
       period
     } = req.body
 
-    const updatedGroup = {
-      name,
-      description,
-      category,
-      ra_group_owner,
-      qtt_min_students,
-      qtt_max_students,
-      qtt_meetings,
-      campus,
-      semester_year,
-      period
-    }
-
-    const group = await Group.findByPk(id)
+    const group = await Group.findByPk(id,
+      {
+        attributes: [
+          'id',
+          'name',
+          'description',
+          'ra_group_owner',
+          'qtt_min_students',
+          'qtt_max_students',
+          'qtt_meetings',
+          'period',
+          'status'
+        ],
+        include: [
+          { association: 'campus', attributes: ['name'], where: { status: 'A' } },
+          { association: 'semester', attributes: ['name'], where: { status: 'A' } },
+          { association: 'category', attributes: ['name'], where: { status: 'A' } },
+          { association: 'students', attributes: ['name'] }
+        ],
+        where: { id, status: 'A' }
+      }
+    )
 
     if (!group) {
       return res.status(404).json({
@@ -117,16 +139,26 @@ module.exports = {
       })
     }
 
-    await Group.update(updatedGroup, { where: { id: id } })
+    await group.update({
+      name,
+      description,
+      category_id,
+      ra_group_owner,
+      qtt_min_students,
+      qtt_max_students,
+      qtt_meetings,
+      campus_id,
+      semester_id,
+      period
+    })
 
-    updatedGroup.id = id
-    return res.json(updatedGroup)
+    return res.json(group)
   },
 
   async delete (req, res) {
     const { id } = req.params
 
-    const group = await Group.findByPk(id)
+    const group = await Group.findOne({ where: { id, status: 'A' } })
 
     if (!group) {
       return res.status(404).json({
@@ -135,7 +167,7 @@ module.exports = {
       })
     }
 
-    await group.update({ status: 'I', where: { id: id } })
+    await group.update({ status: 'I' })
 
     return res.status(204).send()
   }

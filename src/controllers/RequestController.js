@@ -42,6 +42,12 @@ module.exports = {
         'status'
       ],
       where: { status: 'P' },
+      include: [
+        { association: 'campus', attributes: ['name'], where: { status: 'A' } },
+        { association: 'semester', attributes: ['name'], where: { status: 'A' } },
+        { association: 'category', attributes: ['name'], where: { status: 'A' } },
+        { association: 'students', attributes: ['name'] }
+      ],
       order: ['id']
     })
 

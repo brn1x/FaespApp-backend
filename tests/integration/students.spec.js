@@ -47,7 +47,7 @@ describe('Testing StudentsController', () => {
   })
 
   it('should list all students', async () => {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 1; i < 4; i++) {
       await request(app)
         .post('/students')
         .send({

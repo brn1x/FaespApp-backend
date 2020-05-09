@@ -5,6 +5,9 @@ const SessionController = require('./controllers/SessionController')
 const SubscriptionController = require('./controllers/SubscriptionController')
 const RequestController = require('./controllers/RequestController')
 const AdminGroupController = require('./controllers/AdminGroupController')
+const CampusController = require('./controllers/CampusController')
+const CategoryController = require('./controllers/CategoryController')
+const SemesterController = require('./controllers/SemesterController')
 
 const routes = express.Router()
 
@@ -38,5 +41,23 @@ routes.post('/admin', AdminGroupController.store)
 routes.get('/admin/:id', AdminGroupController.findById)
 routes.put('/admin/:id', AdminGroupController.update)
 routes.delete('/admin/:id', AdminGroupController.delete)
+
+routes.get('/campus', CampusController.index)
+routes.post('/campus', CampusController.store)
+routes.get('/campus/:id', CampusController.findById)
+routes.put('/campus/:id', CampusController.update)
+routes.delete('/campus/:id', CampusController.delete)
+
+routes.get('/categories', CategoryController.index)
+routes.post('/categories', CategoryController.store)
+routes.get('/categories/:id', CategoryController.findById)
+routes.put('/categories/:id', CategoryController.update)
+routes.delete('/categories/:id', CategoryController.delete)
+
+routes.get('/semesters', SemesterController.index)
+routes.post('/semesters', SemesterController.store)
+routes.get('/semesters/:id', SemesterController.findById)
+routes.put('/semesters/:id', SemesterController.update)
+routes.delete('/semesters/:id', SemesterController.delete)
 
 module.exports = routes
