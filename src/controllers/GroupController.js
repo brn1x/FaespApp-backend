@@ -1,5 +1,7 @@
 const Group = require('../models/Group')
 
+const validateCreateDate = require('../utils/validateCreateDate')
+
 module.exports = {
   async index (req, res) {
     const groups = await Group.findAll({
@@ -62,35 +64,44 @@ module.exports = {
   },
 
   async store (req, res) {
-    const {
-      name,
-      description,
-      category_id,
-      ra_group_owner,
-      qtt_min_students,
-      qtt_max_students,
-      qtt_meetings,
-      campus_id,
-      semester_id,
-      period,
-      status = 'P'
-    } = req.body
+    validateCreateDate()
+      .then(async response => {
+        if (response === true) {
+          const {
+            name,
+            description,
+            category_id,
+            ra_group_owner,
+            qtt_min_students,
+            qtt_max_students,
+            qtt_meetings,
+            campus_id,
+            semester_id,
+            period,
+            status = 'P'
+          } = req.body
 
-    const group = await Group.create({
-      name,
-      description,
-      category_id,
-      ra_group_owner,
-      qtt_min_students,
-      qtt_max_students,
-      qtt_meetings,
-      campus_id,
-      semester_id,
-      period,
-      status
-    })
-
-    return res.json(group)
+          const group = await Group.create({
+            name,
+            description,
+            category_id,
+            ra_group_owner,
+            qtt_min_students,
+            qtt_max_students,
+            qtt_meetings,
+            campus_id,
+            semester_id,
+            period,
+            status
+          })
+          return res.json(group)
+        } else {
+          return res.status(405).send({
+            statusCode: 405,
+            error: 'Method not allowed'
+          })
+        }
+      })
   },
 
   async update (req, res) {
