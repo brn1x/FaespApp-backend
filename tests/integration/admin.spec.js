@@ -1,77 +1,67 @@
 const request = require('supertest')
 const app = require('../../src/app')
 
-describe('Testing GroupAdminController', () => {
-  it('should create a new AdminGroup', async () => {
-    const adminGroup = await request(app)
-      .post('/admin')
+describe('Testing AdminController', () => {
+  it('should be able to CREATE an Administrador', async () => {
+    const admin = await request(app)
+      .post('/admins')
       .send({
-        init_create_date: '1998-08-18',
-        end_create_date: '2002-08-18',
-        init_subscription_date: '1985-01-11',
-        end_subscription_date: '1998-01-11'
+        login: 'admin',
+        password: 'admin',
+        access_level: 3
       })
 
-    expect(adminGroup.status).toBe(200)
-    expect(adminGroup.body).toHaveProperty('init_create_date')
+    expect(admin.status).toBe(200)
+    expect(admin.body).toHaveProperty('login')
   })
 
-  it('should update an AdminGroup information', async () => {
-    const adminGroup = await request(app)
-      .get('/admin/1')
+  it('should be able to UPDATE an Administrador', async () => {
+    const admin = await request(app)
+      .get('/admins/2')
 
-    const updatedAdminGroup = await request(app)
-      .put('/admin/1')
+    const updatedAdmin = await request(app)
+      .put('/admins/2')
       .send({
-        init_create_date: '2000-12-21',
-        end_create_date: '2000-12-21',
-        init_subscription_date: '2000-12-21',
-        end_subscription_date: '2000-12-21'
+        login: 'admin updated',
+        password: 'admin',
+        access_level: 3
       })
 
-    console.log(adminGroup.body.init_create_date)
-    console.log(updatedAdminGroup.body.init_create_date)
-
-    expect(adminGroup.body.init_create_date).toBe('1998-08-18')
-    expect(updatedAdminGroup.body.init_create_date).not.toBe(adminGroup.body.init_create_date)
-    expect(updatedAdminGroup.body.init_create_date).toBe('2000-12-21')
-    expect(adminGroup.body.id.toString()).toBe(updatedAdminGroup.body.id.toString())
+    expect(admin.body.login).toBe('admin')
+    expect(updatedAdmin.status).toBe(200)
+    expect(updatedAdmin.body.login).not.toBe(admin.body.login)
+    expect(updatedAdmin.body.id.toString()).toBe(admin.body.id.toString())
+    expect(updatedAdmin.body.login).toBe('admin updated')
   })
 
-  it('should delete an AdminGroup', async () => {
-    const deletedAdminGroup = await request(app)
-      .delete('/admin/1')
+  it('should be able to DELETE an Administrador', async () => {
+    const deletedAdmin = await request(app)
+      .delete('/admins/2')
 
-    const adminGroup = await request(app)
-      .get('/admin/1')
+    const admin = await request(app)
+      .get('/admins/2')
 
-    expect(deletedAdminGroup.status).toBe(204)
-    expect(adminGroup.body).toHaveProperty('error')
+    expect(deletedAdmin.status).toBe(204)
+    expect(admin.body).toHaveProperty('error')
+    expect(admin.body.error).toBe('Content not found')
   })
 
-  it('should bring the information from the latest AdminGroup created', async () => {
-    await request(app)
-      .post('/admin')
-      .send({
-        init_create_date: '1998-08-18',
-        end_create_date: '2002-08-18',
-        init_subscription_date: '1985-01-11',
-        end_subscription_date: '1998-01-11'
-      })
+  it('should be able to LIST ALL Administradors', async () => {
+    for (let i = 1; i < 4; i++) {
+      await request(app)
+        .post('/admins')
+        .send({
+          login: `admin ${i}`,
+          password: 'admin',
+          access_level: 3
+        })
+    }
 
-    await request(app)
-      .post('/admin')
-      .send({
-        init_create_date: '2020-02-02',
-        end_create_date: '2020-02-02',
-        init_subscription_date: '2020-02-02',
-        end_subscription_date: '2020-02-02'
-      })
+    const admin = await request(app)
+      .get('/admins')
 
-    const adminGroup = await request(app)
-      .get('/admin')
-
-    // expect(adminGroup.body).toHaveLength(1)
-    expect(adminGroup.body.init_create_date).toBe('2020-02-02')
+    expect(admin.status).toBe(200)
+    expect(admin.body).toHaveLength(4)
+    expect(admin.body[0]).toHaveProperty('login')
   })
 })
