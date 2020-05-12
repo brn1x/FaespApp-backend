@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize')
 
-class AdminGroup extends Model {
+class ConfigDate extends Model {
   static init (sequelize) {
     super.init({
       init_create_date: DataTypes.DATEONLY,
@@ -13,4 +13,4 @@ class AdminGroup extends Model {
   }
 }
 
-module.exports = AdminGroup
+module.exports = ConfigDate

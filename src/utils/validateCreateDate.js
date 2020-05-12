@@ -1,7 +1,7 @@
-const AdminGroup = require('../models/AdminGroup')
+const ConfigDate = require('../models/ConfigDate')
 
 async function validateCreateDate () {
-  const date = await AdminGroup.findOne({
+  const date = await ConfigDate.findOne({
     order: [['id', 'DESC']]
   })
 

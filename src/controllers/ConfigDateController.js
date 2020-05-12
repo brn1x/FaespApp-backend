@@ -1,27 +1,27 @@
-const AdminGroup = require('../models/AdminGroup')
+const ConfigDate = require('../models/ConfigDate')
 
 module.exports = {
   async index (req, res) {
-    const admingroups = await AdminGroup.findOne({
+    const configDate = await ConfigDate.findOne({
       order: [['id', 'DESC']]
     })
 
-    return res.json(admingroups)
+    return res.json(configDate)
   },
 
   async findById (req, res) {
     const { id } = req.params
 
-    const admingroup = await AdminGroup.findByPk(id)
+    const configDate = await ConfigDate.findByPk(id)
 
-    if (!admingroup) {
+    if (!configDate) {
       return res.status(404).json({
         statusCode: 404,
         error: 'Content not found'
       })
     }
 
-    return res.json(admingroup)
+    return res.json(configDate)
   },
 
   async store (req, res) {
@@ -32,14 +32,14 @@ module.exports = {
       end_subscription_date
     } = req.body
 
-    const admingroup = await AdminGroup.create({
+    const configDate = await ConfigDate.create({
       init_create_date,
       end_create_date,
       init_subscription_date,
       end_subscription_date
     })
 
-    return res.json(admingroup)
+    return res.json(configDate)
   },
 
   async update (req, res) {
@@ -52,41 +52,41 @@ module.exports = {
       end_subscription_date
     } = req.body
 
-    const updatedAdminGroup = {
+    const updatedConfigDate = {
       init_create_date,
       end_create_date,
       init_subscription_date,
       end_subscription_date
     }
 
-    const admingroup = await AdminGroup.findByPk(id)
+    const configDate = await ConfigDate.findByPk(id)
 
-    if (!admingroup) {
+    if (!configDate) {
       return res.status(404).json({
         statusCode: 404,
         error: 'Content not found'
       })
     }
 
-    await AdminGroup.update(updatedAdminGroup, { where: { id: id } })
+    await ConfigDate.update(updatedConfigDate, { where: { id: id } })
 
-    updatedAdminGroup.id = id
-    return res.json(updatedAdminGroup)
+    updatedConfigDate.id = id
+    return res.json(updatedConfigDate)
   },
 
   async delete (req, res) {
     const { id } = req.params
 
-    const admingroup = await AdminGroup.findByPk(id)
+    const configDate = await ConfigDate.findByPk(id)
 
-    if (!admingroup) {
+    if (!configDate) {
       return res.status(404).json({
         statusCode: 404,
         error: 'Content not found'
       })
     }
 
-    await admingroup.destroy()
+    await configDate.destroy()
 
     return res.status(204).send()
   }
