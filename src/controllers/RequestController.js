@@ -31,13 +31,10 @@ module.exports = {
         'id',
         'name',
         'description',
-        'category',
         'ra_group_owner',
         'qtt_min_students',
         'qtt_max_students',
         'qtt_meetings',
-        'campus',
-        'semester_year',
         'period',
         'status'
       ],
