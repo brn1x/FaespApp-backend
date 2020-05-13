@@ -18,10 +18,10 @@ module.exports = {
       ],
       where: { status: 'A' },
       include: [
-        { association: 'campus', attributes: ['name'], where: { status: 'A' } },
-        { association: 'semester', attributes: ['name'], where: { status: 'A' } },
-        { association: 'category', attributes: ['name'], where: { status: 'A' } },
-        { association: 'students', attributes: ['name'] }
+        { association: 'campus', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'semester', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'category', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'students', attributes: ['id', 'name'] }
       ],
       order: ['id']
     })
@@ -45,10 +45,10 @@ module.exports = {
         'status'
       ],
       include: [
-        { association: 'campus', attributes: ['name'], where: { status: 'A' } },
-        { association: 'semester', attributes: ['name'], where: { status: 'A' } },
-        { association: 'category', attributes: ['name'], where: { status: 'A' } },
-        { association: 'students', attributes: ['name'] }
+        { association: 'campus', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'semester', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'category', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'students', attributes: ['id', 'name'] }
       ],
       where: { id, status: 'A' }
     })
