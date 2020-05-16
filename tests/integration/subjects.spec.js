@@ -59,5 +59,12 @@ describe('Testing SubjectController', () => {
           status: true
         })
     }
+
+    const subjects = await request(app)
+      .get('/subjects')
+
+    expect(subjects.status).toBe(200)
+    expect(subjects.body).toHaveLength(4)
+    expect(subjects.body[0]).toHaveProperty('name')
   })
 })

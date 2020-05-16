@@ -11,6 +11,7 @@ const SemesterController = require('./controllers/SemesterController')
 const AdminController = require('./controllers/AdminController')
 const CourseController = require('./controllers/CourseController')
 const SubjectController = require('./controllers/SubjectController')
+const GradeController = require('./controllers/GradeController')
 
 const routes = express.Router()
 
@@ -80,5 +81,11 @@ routes.post('/subjects', SubjectController.store)
 routes.get('/subjects/:id', SubjectController.findById)
 routes.put('/subjects/:id', SubjectController.update)
 routes.delete('/subjects/:id', SubjectController.delete)
+
+routes.get('/grades', GradeController.index)
+routes.post('/grades', GradeController.store)
+routes.get('/grades/:id', GradeController.findById)
+routes.put('/grades/:id', GradeController.update)
+routes.delete('/grades/:id', GradeController.delete)
 
 module.exports = routes
