@@ -1,4 +1,5 @@
 const Group = require('../models/Group')
+const LogController = require('../controllers/LogController')
 
 module.exports = {
   async accept (req, res) {
@@ -9,6 +10,9 @@ module.exports = {
     group.update({
       status: 'A'
     })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Group "${group.name.toUpperCase()}" accepted`, admin_id)
 
     return res.json(group)
   },
@@ -21,6 +25,9 @@ module.exports = {
     group.update({
       status: 'R'
     })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Group "${group.name.toUpperCase()}" refused`, admin_id)
 
     return res.json(group)
   },

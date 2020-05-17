@@ -94,6 +94,7 @@ module.exports = {
             period,
             status
           })
+
           return res.json(group)
         } else {
           return res.status(405).send({

@@ -1,4 +1,5 @@
 const Category = require('../models/Category')
+const LogController = require('../controllers/LogController')
 
 module.exports = {
   async index (req, res) {
@@ -29,6 +30,9 @@ module.exports = {
 
     const category = await Category.create({ name })
 
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Category "${category.name.toUpperCase()}" created`, admin_id)
+
     return res.json(category)
   },
 
@@ -45,6 +49,9 @@ module.exports = {
     }
 
     await category.update({ status: 'I' })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Category "${category.name.toUpperCase()}" inativated`, admin_id)
 
     return res.status(204).send()
   },
@@ -64,6 +71,9 @@ module.exports = {
     const { name } = req.body
 
     await category.update({ name })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Category "${category.name.toUpperCase()}" updated`, admin_id)
 
     return res.json(category)
   }

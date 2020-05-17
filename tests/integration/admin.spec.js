@@ -5,6 +5,7 @@ describe('Testing AdminController', () => {
   it('should be able to CREATE an Administrador', async () => {
     const admin = await request(app)
       .post('/admins')
+      .set({ 'X-logged-user': 1 })
       .send({
         login: 'admin',
         password: 'admin',
@@ -21,6 +22,7 @@ describe('Testing AdminController', () => {
 
     const updatedAdmin = await request(app)
       .put('/admins/2')
+      .set({ 'X-logged-user': 1 })
       .send({
         login: 'admin updated',
         password: 'admin',
@@ -37,6 +39,7 @@ describe('Testing AdminController', () => {
   it('should be able to DELETE an Administrador', async () => {
     const deletedAdmin = await request(app)
       .delete('/admins/2')
+      .set({ 'X-logged-user': 1 })
 
     const admin = await request(app)
       .get('/admins/2')
@@ -50,6 +53,7 @@ describe('Testing AdminController', () => {
     for (let i = 1; i < 4; i++) {
       await request(app)
         .post('/admins')
+        .set({ 'X-logged-user': 1 })
         .send({
           login: `admin ${i}`,
           password: 'admin',

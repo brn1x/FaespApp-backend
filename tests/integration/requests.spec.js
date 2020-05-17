@@ -50,6 +50,7 @@ describe('Testing GroupsController', () => {
   it('should be able to accept a request', async () => {
     const acceptRequest = await request(app)
       .put('/requests/accept/2')
+      .set({ 'X-logged-user': 1 })
 
     expect(acceptRequest.status).toBe(200)
     expect(acceptRequest.body).toHaveProperty('name')
@@ -59,6 +60,7 @@ describe('Testing GroupsController', () => {
   it('should be able to decline a request', async () => {
     const declineRequest = await request(app)
       .put('/requests/reject/3')
+      .set({ 'X-logged-user': 1 })
 
     expect(declineRequest.status).toBe(200)
     expect(declineRequest.body).toHaveProperty('name')

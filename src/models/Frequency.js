@@ -4,7 +4,8 @@ class Frequency extends Model {
   static init (sequelize) {
     super.init({
       class_date: DataTypes.DATEONLY,
-      lack: DataTypes.BOOLEAN
+      lack: DataTypes.BOOLEAN,
+      status: DataTypes.STRING(1)
     }, {
       sequelize
     })

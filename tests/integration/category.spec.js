@@ -5,6 +5,7 @@ describe('Testing CategoryController', () => {
   it('should create a category', async () => {
     const category = await request(app)
       .post('/categories')
+      .set({ 'X-logged-user': 1 })
       .send({
         name: 'Test Category'
       })
@@ -19,6 +20,7 @@ describe('Testing CategoryController', () => {
 
     const updatedCategory = await request(app)
       .put('/categories/2')
+      .set({ 'X-logged-user': 1 })
       .send({
         name: 'Updated Category'
       })
@@ -33,6 +35,7 @@ describe('Testing CategoryController', () => {
   it('should delete a category', async () => {
     const deletedCategory = await request(app)
       .delete('/categories/2')
+      .set({ 'X-logged-user': 1 })
 
     const category = await request(app)
       .get('/categories/2')
@@ -46,6 +49,7 @@ describe('Testing CategoryController', () => {
     for (let i = 1; i < 4; i++) {
       await request(app)
         .post('/categories')
+        .set({ 'X-logged-user': 1 })
         .send({
           name: `Category Test${i}`
         })

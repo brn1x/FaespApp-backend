@@ -4,7 +4,8 @@ module.exports = {
   async index (req, res) {
     const frequencies = await Frequency.findAll({
       attributes: ['id', 'subject_id', 'student_id', 'lack', 'class_date'],
-      order: ['id']
+      order: ['id'],
+      where: { status: 'A' }
     })
 
     return res.json(frequencies)
@@ -13,7 +14,7 @@ module.exports = {
   async findById (req, res) {
     const { id } = req.params
 
-    const frequency = await Frequency.findOne({ where: { id } })
+    const frequency = await Frequency.findOne({ where: { id, status: 'A' } })
 
     if (!frequency) {
       return res.status(404).json({
@@ -41,7 +42,7 @@ module.exports = {
   async update (req, res) {
     const { id } = req.params
 
-    const frequency = await Frequency.findOne({ where: { id } })
+    const frequency = await Frequency.findOne({ where: { id, status: 'A' } })
 
     if (!frequency) {
       return res.status(404).json({
@@ -60,7 +61,7 @@ module.exports = {
   async delete (req, res) {
     const { id } = req.params
 
-    const frequency = await Frequency.findOne({ where: { id } })
+    const frequency = await Frequency.findOne({ where: { id, status: 'A' } })
 
     if (!frequency) {
       return res.status(404).json({
@@ -69,7 +70,7 @@ module.exports = {
       })
     }
 
-    await frequency.destroy()
+    await frequency.update({ status: 'I' })
 
     return res.status(204).send()
   }

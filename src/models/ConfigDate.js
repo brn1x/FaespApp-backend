@@ -6,7 +6,8 @@ class ConfigDate extends Model {
       init_create_date: DataTypes.DATEONLY,
       end_create_date: DataTypes.DATEONLY,
       init_subscription_date: DataTypes.DATEONLY,
-      end_subscription_date: DataTypes.DATEONLY
+      end_subscription_date: DataTypes.DATEONLY,
+      status: DataTypes.STRING(1)
     }, {
       sequelize
     })

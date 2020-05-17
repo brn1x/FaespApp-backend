@@ -5,6 +5,7 @@ describe('Testing ConfigDateController', () => {
   it('should create a new ConfigDate', async () => {
     const configDate = await request(app)
       .post('/configs/date')
+      .set({ 'X-logged-user': 1 })
       .send({
         init_create_date: '2020-01-18',
         end_create_date: '2025-08-18',
@@ -22,6 +23,7 @@ describe('Testing ConfigDateController', () => {
 
     const updatedConfigDate = await request(app)
       .put('/configs/date/2')
+      .set({ 'X-logged-user': 1 })
       .send({
         init_create_date: '2020-01-21',
         end_create_date: '2025-12-21',
@@ -38,6 +40,7 @@ describe('Testing ConfigDateController', () => {
   it('should delete an ConfigDate', async () => {
     const deletedConfigDate = await request(app)
       .delete('/configs/date/2')
+      .set({ 'X-logged-user': 1 })
 
     const configDate = await request(app)
       .get('/configs/date/2')
@@ -49,6 +52,7 @@ describe('Testing ConfigDateController', () => {
   it('should bring the information from the latest ConfigDate created', async () => {
     await request(app)
       .post('/configs/date')
+      .set({ 'X-logged-user': 1 })
       .send({
         init_create_date: '2020-01-18',
         end_create_date: '2025-08-18',
@@ -58,6 +62,7 @@ describe('Testing ConfigDateController', () => {
 
     await request(app)
       .post('/configs/date')
+      .set({ 'X-logged-user': 1 })
       .send({
         init_create_date: '2020-01-02',
         end_create_date: '2025-10-02',

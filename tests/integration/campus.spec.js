@@ -5,6 +5,7 @@ describe('Testing CampusController', () => {
   it('should create a campus', async () => {
     const campus = await request(app)
       .post('/campus')
+      .set({ 'X-logged-user': 1 })
       .send({
         name: 'Test Campus'
       })
@@ -19,6 +20,7 @@ describe('Testing CampusController', () => {
 
     const updatedCampus = await request(app)
       .put('/campus/2')
+      .set({ 'X-logged-user': 1 })
       .send({
         name: 'Updated Campus'
       })
@@ -33,6 +35,7 @@ describe('Testing CampusController', () => {
   it('should delete a campus', async () => {
     const deletedCampus = await request(app)
       .delete('/campus/2')
+      .set({ 'X-logged-user': 1 })
 
     const campus = await request(app)
       .get('/campus/2')
@@ -46,6 +49,7 @@ describe('Testing CampusController', () => {
     for (let i = 1; i < 4; i++) {
       await request(app)
         .post('/campus')
+        .set({ 'X-logged-user': 1 })
         .send({
           name: `Campus Test${i}`
         })

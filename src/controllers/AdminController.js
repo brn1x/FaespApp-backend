@@ -1,4 +1,5 @@
 const Admin = require('../models/Admin')
+const LogController = require('../controllers/LogController')
 
 module.exports = {
   async store (req, res) {
@@ -6,13 +7,17 @@ module.exports = {
 
     const admin = await Admin.create({ login, password, access_level })
 
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Admin user "${admin.login.toUpperCase()}" created`, admin_id)
+
     return res.json(admin)
   },
 
   async index (req, res) {
     const admins = await Admin.findAll({
       attributes: ['id', 'login', 'password', 'access_level'],
-      order: ['id']
+      order: ['id'],
+      where: { status: 'A' }
     })
 
     return res.json(admins)
@@ -21,7 +26,7 @@ module.exports = {
   async findById (req, res) {
     const { id } = req.params
 
-    const admin = await Admin.findOne({ where: { id } })
+    const admin = await Admin.findOne({ where: { id, status: 'A' } })
 
     if (!admin) {
       return res.status(404).json({
@@ -36,7 +41,7 @@ module.exports = {
   async update (req, res) {
     const { id } = req.params
 
-    const admin = await Admin.findOne({ where: { id } })
+    const admin = await Admin.findOne({ where: { id, status: 'A' } })
 
     if (!admin) {
       return res.status(404).json({
@@ -49,13 +54,16 @@ module.exports = {
 
     await admin.update({ login, password, access_level })
 
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Admin user "${admin.login.toUpperCase()}" updated`, admin_id)
+
     return res.json(admin)
   },
 
   async delete (req, res) {
     const { id } = req.params
 
-    const admin = await Admin.findOne({ where: { id } })
+    const admin = await Admin.findOne({ where: { id, status: 'A' } })
 
     if (!admin) {
       return res.status(404).json({
@@ -64,7 +72,10 @@ module.exports = {
       })
     }
 
-    await admin.destroy()
+    await admin.update({ status: 'I' })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Admin user "${admin.login.toUpperCase()}" inactivated`, admin_id)
 
     return res.status(204).send()
   }
