@@ -14,6 +14,8 @@ const SubjectController = require('./controllers/SubjectController')
 const GradeController = require('./controllers/GradeController')
 const FrequencyController = require('./controllers/FrequencyController')
 
+const LogController = require('./controllers/LogController')
+
 const routes = express.Router()
 
 routes.get('/', (req, res) => {
@@ -94,5 +96,7 @@ routes.post('/frequencies', FrequencyController.store)
 routes.get('/frequencies/:id', FrequencyController.findById)
 routes.put('/frequencies/:id', FrequencyController.update)
 routes.delete('/frequencies/:id', FrequencyController.delete)
+
+routes.get('/logs', LogController.index)
 
 module.exports = routes

@@ -5,10 +5,15 @@ class Admin extends Model {
     super.init({
       login: DataTypes.STRING,
       password: DataTypes.STRING,
-      access_level: DataTypes.INTEGER
+      access_level: DataTypes.INTEGER,
+      status: DataTypes.STRING(1)
     }, {
       sequelize
     })
+  }
+
+  static associate (models) {
+    this.hasMany(models.Log, { foreignKey: 'admin_id', as: 'logs' })
   }
 }
 
