@@ -1,4 +1,7 @@
 const Semester = require('../models/Semester')
+const ConfigDate = require('../models/ConfigDate')
+const LogController = require('../controllers/LogController')
+const createSemesterName = require('../utils/CreateSemesterName')
 
 module.exports = {
   async index (req, res) {
@@ -25,9 +28,26 @@ module.exports = {
   },
 
   async store (req, res) {
-    const { name } = req.body
+    const semesterName = createSemesterName()
 
-    const semester = await Semester.create({ name })
+    const semester = await Semester.create({ name: semesterName })
+
+    const configDate = await ConfigDate.create({
+      init_create_date: new Date(),
+      end_create_date: new Date(),
+      init_subscription_date: new Date(),
+      end_subscription_date: new Date(),
+      status: 'A'
+    })
+
+    const lastConfigDate = await ConfigDate.findByPk(configDate.id - 1)
+    await lastConfigDate.update({ status: 'I' })
+
+    const lastSemester = await Semester.findByPk(semester.id - 1)
+    await lastSemester.update({ status: 'I' })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Semester "${semester.name.toUpperCase()}" created`, admin_id)
 
     return res.json(semester)
   },
@@ -45,6 +65,9 @@ module.exports = {
     }
 
     await semester.update({ status: 'I' })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Semester "${semester.name.toUpperCase()}" inactivated`, admin_id)
 
     return res.status(204).send()
   },
@@ -64,6 +87,9 @@ module.exports = {
     }
 
     await semester.update({ name })
+
+    const admin_id = req.headers['x-logged-user']
+    await LogController.store(`Semester "${semester.name.toUpperCase()}" updated`, admin_id)
 
     return res.json(semester)
   }

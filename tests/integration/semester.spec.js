@@ -5,9 +5,8 @@ describe('Testing SemesterController', () => {
   it('should create a Semester', async () => {
     const semester = await request(app)
       .post('/semesters')
-      .send({
-        name: 'Test Semester'
-      })
+      .set({ 'X-logged-user': 1 })
+      .send({})
 
     expect(semester.status).toBe(200)
     expect(semester.body).toHaveProperty('name')
@@ -19,11 +18,12 @@ describe('Testing SemesterController', () => {
 
     const updatedSemester = await request(app)
       .put('/semesters/2')
+      .set({ 'X-logged-user': 1 })
       .send({
         name: 'Updated Semester'
       })
 
-    expect(semester.body.name).toBe('Test Semester')
+    expect(semester.body.name).toBe('2020/1')
     expect(updatedSemester.status).toBe(200)
     expect(updatedSemester.body.name).not.toBe(semester.body.name)
     expect(updatedSemester.body.id.toString()).toBe(semester.body.id.toString())
@@ -33,6 +33,7 @@ describe('Testing SemesterController', () => {
   it('should delete a Semester', async () => {
     const deletedSemester = await request(app)
       .delete('/semesters/2')
+      .set({ 'X-logged-user': 1 })
 
     const semester = await request(app)
       .get('/semesters/2')
@@ -46,16 +47,15 @@ describe('Testing SemesterController', () => {
     for (let i = 1; i < 4; i++) {
       await request(app)
         .post('/semesters')
-        .send({
-          name: `Semester Test${i}`
-        })
+        .set({ 'X-logged-user': 1 })
+        .send({})
     }
 
     const semesters = await request(app)
       .get('/semesters')
 
     expect(semesters.status).toBe(200)
-    expect(semesters.body).toHaveLength(4)
+    expect(semesters.body).toHaveLength(1)
     expect(semesters.body[0]).toHaveProperty('name')
   })
 })
