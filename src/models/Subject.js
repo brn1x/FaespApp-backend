@@ -12,6 +12,7 @@ class Subject extends Model {
   }
 
   static associate (models) {
+    this.belongsToMany(models.Student, { foreignKey: 'subject_id', through: 'students_subjects', as: 'students' })
     this.belongsTo(models.Course, { foreignKey: 'course_id', as: 'course' })
     this.hasOne(models.Grade, { foreignKey: 'subject_id', as: 'grades' })
   }

@@ -1,9 +1,10 @@
 const Student = require('../models/Student')
+const Subject = require('../models/Subject')
 
 module.exports = {
   async index (req, res) {
     const students = await Student.findAll({
-      attributes: ['ra', 'name', 'password'],
+      attributes: ['ra', 'name', 'password', 'course_id'],
       where: { status: 'A' }
     })
 
@@ -26,9 +27,17 @@ module.exports = {
   },
 
   async store (req, res) {
-    const { ra, name, password } = req.body
+    const { ra, name, password, course_id } = req.body
 
-    const student = await Student.create({ ra, name, password })
+    const student = await Student.create({ ra, name, password, course_id })
+
+    const subjects = await Subject.findAll({ where: { course_id } })
+
+    if (subjects.length > 1) {
+      subjects.map(async subject => {
+        await student.addSubjects(subject)
+      })
+    }
 
     return res.json(student)
   },

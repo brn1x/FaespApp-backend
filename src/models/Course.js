@@ -12,6 +12,7 @@ class Course extends Model {
 
   static associate (models) {
     this.hasMany(models.Subject, { foreignKey: 'course_id', as: 'subjects' })
+    this.hasMany(models.Student, { foreignKey: 'course_id', as: 'students' })
   }
 }
 
