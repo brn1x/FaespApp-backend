@@ -14,7 +14,7 @@ module.exports = {
         unique: true,
         allowNull: false
       },
-      password: {
+      student_id: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -26,11 +26,6 @@ module.exports = {
         type: Sequelize.STRING(1),
         allowNull: false,
         defaultValue: 'A'
-      },
-      course_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: 'courses', key: 'id' }
       },
       created_at: {
         type: Sequelize.DATE,

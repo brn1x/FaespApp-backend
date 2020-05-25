@@ -8,8 +8,7 @@ describe('Testing StudentsController', () => {
       .send({
         ra: '12345678900',
         name: 'Student Test',
-        password: '123456',
-        course_id: 1
+        student_id: '123456'
       })
 
     expect(student.body).toHaveProperty('name')
@@ -26,7 +25,7 @@ describe('Testing StudentsController', () => {
       .send({
         ra: '12345678900',
         name: 'Updated Student',
-        password: '654321'
+        student_id: '654321'
       })
 
     expect(student.body.name).toBe('Student Test')
@@ -42,8 +41,6 @@ describe('Testing StudentsController', () => {
     const student = await request(app)
       .get('/students/2')
 
-    console.log(deletedStudent.body)
-    console.log(student.body)
     expect(deletedStudent.status).toBe(204)
     expect(student.body).toHaveProperty('error')
     expect(student.body.error).toBe('Content not found')
@@ -56,8 +53,7 @@ describe('Testing StudentsController', () => {
         .send({
           ra: Math.floor(Math.random() * 100000000000).toString(),
           name: 'Student Generated',
-          password: '1234',
-          course_id: 1
+          student_id: `1234${i}`
         })
     }
 

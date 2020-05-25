@@ -1,32 +1,54 @@
 const Student = require('../models/Student')
 const Admin = require('../models/Admin')
 
+require('dotenv').config()
+
+const axios = require('axios')
+const FormData = require('form-data')
+
 module.exports = {
   async create (req, res) {
     const { login, password } = req.body
 
-    const student = await Student.findOne({ where: { ra: login, password } })
+    const admin = await Admin.findOne({ where: { login, password } })
 
-    if (!student) {
-      const admin = await Admin.findOne({ where: { login, password } })
+    if (!admin) {
+      const form = new FormData()
+      form.append('login', login)
+      form.append('password', password)
+      form.append('format', 'JSON')
 
-      if (!admin) {
-        return res.status(404).json({
-          statusCode: 404,
-          error: 'Content not found'
+      const response = await axios.post('https://faesp.jacad.com.br:443/academico/api/mobile/autenticar', form, {
+        headers: form.getHeaders({ token: process.env.API_TOKEN })
+      })
+
+      if (response.status === 200) {
+        await Student.findCreateFind({
+          where: {
+            ra: response.data.perfilMobile.ra,
+            student_id: response.data.perfilMobile.idAluno.toString(),
+            name: response.data.perfilMobile.nome,
+            status: 'A'
+          }
+        })
+
+        return res.json({
+          nome: response.data.perfilMobile.nome,
+          idAluno: response.data.perfilMobile.idAluno,
+          authorized: true
+        })
+      } else {
+        return res.status(400).send({
+          statusCode: 400,
+          error: 'Bad Request'
         })
       }
-
-      return res.json({
-        login,
-        authorized: true
-      })
     }
 
-    return res.status(200).json({
-      ra: student.ra,
-      name: student.name,
-      authorized: true
+    return res.json({
+      login: admin.login,
+      access_level: admin.access_level,
+      token: true
     })
   }
 }

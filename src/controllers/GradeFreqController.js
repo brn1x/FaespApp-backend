@@ -3,11 +3,13 @@ const axios = require('axios')
 
 module.exports = {
   async index (req, res) {
+    const user = req.headers['x-logged-user']
+
     const form = new FormData()
-    form.append('idCurso', 16)
+    form.append('idAluno', user)
     form.append('format', 'JSON')
 
-    const response = await axios.post('https://faesp.jacad.com.br:443/academico/api/v1/opa/matriz/disciplinas', form, {
+    const response = await axios.post('https://faesp.jacad.com.br:443/academico/api/mobile/notas', form, {
       headers: form.getHeaders({ token: process.env.API_TOKEN })
     })
 

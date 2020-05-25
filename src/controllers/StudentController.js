@@ -1,10 +1,9 @@
 const Student = require('../models/Student')
-const Subject = require('../models/Subject')
 
 module.exports = {
   async index (req, res) {
     const students = await Student.findAll({
-      attributes: ['ra', 'name', 'password', 'course_id'],
+      attributes: ['ra', 'name', 'student_id'],
       where: { status: 'A' }
     })
 
@@ -27,17 +26,9 @@ module.exports = {
   },
 
   async store (req, res) {
-    const { ra, name, password, course_id } = req.body
+    const { ra, name, student_id } = req.body
 
-    const student = await Student.create({ ra, name, password, course_id })
-
-    const subjects = await Subject.findAll({ where: { course_id } })
-
-    if (subjects.length > 1) {
-      subjects.map(async subject => {
-        await student.addSubjects(subject)
-      })
-    }
+    const student = await Student.create({ ra, name, student_id })
 
     return res.json(student)
   },
@@ -45,7 +36,7 @@ module.exports = {
   async update (req, res) {
     const { id } = req.params
 
-    const { ra, name, password } = req.body
+    const { ra, name, student_id } = req.body
 
     const student = await Student.findOne({ where: { id, status: 'A' } })
 
@@ -62,7 +53,7 @@ module.exports = {
         error: 'Internal server error'
       })
     }
-    await student.update({ name, password })
+    await student.update({ name, student_id })
 
     return res.json(student)
   },
