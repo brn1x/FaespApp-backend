@@ -33,8 +33,12 @@ module.exports = {
         })
 
         return res.json({
-          nome: response.data.perfilMobile.nome,
+          ra: response.data.perfilMobile.ra,
+          name: response.data.perfilMobile.nome,
+          celular: response.data.perfilMobile.celular,
           idAluno: response.data.perfilMobile.idAluno,
+          avatar: response.data.perfilMobile.avatar,
+          accessType: response.data.perfilMobile.tipoAcesso,
           authorized: true
         })
       } else {
