@@ -30,10 +30,11 @@ module.exports = {
           'status'
         ],
         where: { status: 'A' },
+        through: { attributes: [] },
         include: [
-          { association: 'campus', attributes: ['id', 'name'], where: { status: 'A' } },
-          { association: 'semester', attributes: ['id', 'name'], where: { status: 'A' } },
-          { association: 'category', attributes: ['id', 'name'], where: { status: 'A' } },
+          { association: 'campus', attributes: ['id', 'name'], where: { status: 'A' }, required: false },
+          { association: 'semester', attributes: ['id', 'name'], where: { status: 'A' }, required: false },
+          { association: 'category', attributes: ['id', 'name'], where: { status: 'A' }, required: false },
           { association: 'students', attributes: ['id', 'name'], through: { attributes: [] } }
         ],
         order: ['id']
