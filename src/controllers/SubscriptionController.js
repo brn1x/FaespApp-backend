@@ -7,6 +7,13 @@ module.exports = {
   async index (req, res) {
     const ra = req.headers['x-logged-user']
 
+    if (!ra) {
+      return res.status(404).json({
+        statusCode: 401,
+        error: 'Unauthorized'
+      })
+    }
+
     const student = await Student.findOne({
       where: { ra },
       include: [{
@@ -16,7 +23,7 @@ module.exports = {
       }]
     })
 
-    if (student.groups.length === 0) {
+    if (!student || student.groups.length === 0) {
       return res.status(204).send()
     }
 
