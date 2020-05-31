@@ -21,7 +21,7 @@ module.exports = {
         { association: 'campus', attributes: ['id', 'name'], where: { status: 'A' } },
         { association: 'semester', attributes: ['id', 'name'], where: { status: 'A' } },
         { association: 'category', attributes: ['id', 'name'], where: { status: 'A' } },
-        { association: 'students', attributes: ['id', 'name'] }
+        { association: 'students', attributes: ['id', 'name'], through: { attributes: [] } }
       ],
       order: ['id']
     })

@@ -35,6 +35,7 @@ routes.delete('/students/:id', StudentController.delete)
 
 routes.post('/session', SessionController.create)
 
+routes.get('/subscription/', SubscriptionController.index)
 routes.post('/subscription/:id', SubscriptionController.subscribe)
 routes.delete('/subscription/:id', SubscriptionController.unsubscribe)
 
