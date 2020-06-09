@@ -1,10 +1,36 @@
 const Group = require('../models/Group')
+const { Op } = require('sequelize')
 
 const validateCreateDate = require('../utils/validateCreateDate')
 
 module.exports = {
   async index (req, res) {
+    const studentRA = req.headers['x-logged-user']
+
+    const studentGroups = await Group.findAll({
+      attributes: ['id'],
+      include: [{
+        association: 'students',
+        where: { ra: studentRA },
+        attributes: []
+      }]
+    })
+
     const groups = await Group.findAll({
+      attributes: ['id'],
+      include: [{
+        association: 'students',
+        attributes: []
+      }]
+    })
+
+    const filteredGroupsId = groups.filter(x => {
+      return studentGroups.filter(y => {
+        return x.id === y.id
+      }).length === 0
+    }).map(x => { return x.id })
+
+    const filteredGroups = await Group.findAll({
       attributes: [
         'id',
         'name',
@@ -16,17 +42,38 @@ module.exports = {
         'period',
         'status'
       ],
-      where: { status: 'A' },
+      where: {
+        status: 'A',
+        id: {
+          [Op.in]: filteredGroupsId
+        }
+      },
       include: [
-        { association: 'campus', attributes: ['id', 'name'], where: { status: 'A' } },
-        { association: 'semester', attributes: ['id', 'name'], where: { status: 'A' } },
-        { association: 'category', attributes: ['id', 'name'], where: { status: 'A' } },
-        { association: 'students', attributes: ['id', 'name'], through: { attributes: [] } }
+        {
+          association: 'campus',
+          attributes: ['id', 'name'],
+          where: { status: 'A' }
+        },
+        {
+          association: 'semester',
+          attributes: ['id', 'name'],
+          where: { status: 'A' }
+        },
+        {
+          association: 'category',
+          attributes: ['id', 'name'],
+          where: { status: 'A' }
+        },
+        {
+          association: 'students',
+          attributes: ['id', 'name'],
+          through: { attributes: [] }
+        }
       ],
       order: ['id']
     })
 
-    return res.json(groups)
+    return res.json(filteredGroups)
   },
 
   async findById (req, res) {
