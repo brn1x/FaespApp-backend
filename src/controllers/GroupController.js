@@ -7,6 +7,13 @@ module.exports = {
   async index (req, res) {
     const studentRA = req.headers['x-logged-user']
 
+    if (!studentRA) {
+      return res.status(401).json({
+        statusCode: 401,
+        error: 'Unauthorized'
+      })
+    }
+
     const studentGroups = await Group.findAll({
       attributes: ['id'],
       include: [{
