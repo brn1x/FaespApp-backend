@@ -1,4 +1,5 @@
 const Group = require('../models/Group')
+const Semester = require('../models/Semester')
 const { Op } = require('sequelize')
 
 const validateCreateDate = require('../utils/validateCreateDate')
@@ -125,15 +126,19 @@ module.exports = {
             name,
             description,
             category_id,
-            ra_group_owner,
             qtt_min_students,
             qtt_max_students,
             qtt_meetings,
             campus_id,
-            semester_id,
             period,
             status = 'P'
           } = req.body
+
+          const semester = await Semester.findOne({
+            order: [['id', 'DESC']],
+            where: { status: 'A' }
+          })
+          const ra_group_owner = req.headers['x-logged-user'] || req.body.ra_group_owner
 
           const group = await Group.create({
             name,
@@ -144,7 +149,7 @@ module.exports = {
             qtt_max_students,
             qtt_meetings,
             campus_id,
-            semester_id,
+            semester_id: semester.id,
             period,
             status
           })
