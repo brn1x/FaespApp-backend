@@ -5,7 +5,8 @@ const createSemesterName = require('../utils/CreateSemesterName')
 
 module.exports = {
   async index (req, res) {
-    const semesters = await Semester.findAll({
+    const semesters = await Semester.findOne({
+      order: [['id', 'DESC']],
       where: { status: 'A' }
     })
 
