@@ -22,6 +22,7 @@ routes.get('/', (req, res) => {
 })
 
 routes.get('/groups', GroupController.index)
+routes.get('/groups/all', GroupController.allGroups)
 routes.post('/groups', GroupController.store)
 routes.get('/groups/:id', GroupController.findById)
 routes.put('/groups/:id', GroupController.update)

@@ -64,8 +64,7 @@ module.exports = {
         },
         {
           association: 'semester',
-          attributes: ['id', 'name'],
-          where: { status: 'A' }
+          attributes: ['id', 'name']
         },
         {
           association: 'category',
@@ -82,6 +81,47 @@ module.exports = {
     })
 
     return res.json(filteredGroups)
+  },
+
+  async allGroups (req, res) {
+    const groups = await Group.findAll({
+      attributes: [
+        'id',
+        'name',
+        'description',
+        'ra_group_owner',
+        'qtt_min_students',
+        'qtt_max_students',
+        'qtt_meetings',
+        'period',
+        'status'
+      ],
+      where: { status: 'A' },
+      include: [
+        {
+          association: 'campus',
+          attributes: ['id', 'name'],
+          where: { status: 'A' }
+        },
+        {
+          association: 'semester',
+          attributes: ['id', 'name']
+        },
+        {
+          association: 'category',
+          attributes: ['id', 'name'],
+          where: { status: 'A' }
+        },
+        {
+          association: 'students',
+          attributes: ['id', 'name'],
+          through: { attributes: [] }
+        }
+      ],
+      order: ['id']
+    })
+
+    return res.json(groups)
   },
 
   async findById (req, res) {
