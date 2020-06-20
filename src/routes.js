@@ -1,4 +1,5 @@
 const express = require('express')
+const jwt = require('./authentication/jwt')
 
 const GroupController = require('./controllers/GroupController')
 const StudentController = require('./controllers/StudentController')
@@ -21,63 +22,78 @@ routes.get('/', (req, res) => {
   res.send({ resource: 'Faesp App API' })
 })
 
-routes.get('/groups', GroupController.index)
-routes.get('/groups/all', GroupController.allGroups)
-routes.post('/groups', GroupController.store)
-routes.get('/groups/:id', GroupController.findById)
-routes.put('/groups/:id', GroupController.update)
-routes.delete('/groups/:id', GroupController.delete)
+routes.get('/groups', validateToken, GroupController.index)
+routes.get('/groups/all', validateToken, GroupController.allGroups)
+routes.post('/groups', validateToken, GroupController.store)
+routes.get('/groups/:id', validateToken, GroupController.findById)
+routes.put('/groups/:id', validateToken, GroupController.update)
+routes.delete('/groups/:id', validateToken, GroupController.delete)
 
-routes.get('/students', StudentController.index)
-routes.post('/students', StudentController.store)
-routes.get('/students/:id', StudentController.findById)
-routes.put('/students/:id', StudentController.update)
-routes.delete('/students/:id', StudentController.delete)
+routes.get('/students', validateToken, validateToken, StudentController.index)
+routes.post('/students', validateToken, StudentController.store)
+routes.get('/students/:id', validateToken, StudentController.findById)
+routes.put('/students/:id', validateToken, StudentController.update)
+routes.delete('/students/:id', validateToken, StudentController.delete)
 
 routes.post('/session', SessionController.create)
 
-routes.get('/subscription/', SubscriptionController.index)
-routes.post('/subscription/:id', SubscriptionController.subscribe)
-routes.delete('/subscription/:id', SubscriptionController.unsubscribe)
+routes.get('/subscription/', validateToken, SubscriptionController.index)
+routes.post('/subscription/:id', validateToken, SubscriptionController.subscribe)
+routes.delete('/subscription/:id', validateToken, SubscriptionController.unsubscribe)
 
-routes.get('/requests', RequestController.index)
-routes.put('/requests/accept/:id', RequestController.accept)
-routes.put('/requests/reject/:id', RequestController.decline)
+routes.get('/requests', validateToken, RequestController.index)
+routes.put('/requests/accept/:id', validateToken, RequestController.accept)
+routes.put('/requests/reject/:id', validateToken, RequestController.decline)
 
-routes.get('/configs/date', ConfigDateController.index)
-routes.post('/configs/date', ConfigDateController.store)
-routes.get('/configs/date/:id', ConfigDateController.findById)
-routes.put('/configs/date/:id', ConfigDateController.update)
-routes.delete('/configs/date/:id', ConfigDateController.delete)
+routes.get('/configs/date', validateToken, ConfigDateController.index)
+routes.post('/configs/date', validateToken, ConfigDateController.store)
+routes.get('/configs/date/:id', validateToken, ConfigDateController.findById)
+routes.put('/configs/date/:id', validateToken, ConfigDateController.update)
+routes.delete('/configs/date/:id', validateToken, ConfigDateController.delete)
 
-routes.get('/campus', CampusController.index)
-routes.post('/campus', CampusController.store)
-routes.get('/campus/:id', CampusController.findById)
-routes.put('/campus/:id', CampusController.update)
-routes.delete('/campus/:id', CampusController.delete)
+routes.get('/campus', validateToken, CampusController.index)
+routes.post('/campus', validateToken, CampusController.store)
+routes.get('/campus/:id', validateToken, CampusController.findById)
+routes.put('/campus/:id', validateToken, CampusController.update)
+routes.delete('/campus/:id', validateToken, CampusController.delete)
 
-routes.get('/categories', CategoryController.index)
-routes.post('/categories', CategoryController.store)
-routes.get('/categories/:id', CategoryController.findById)
-routes.put('/categories/:id', CategoryController.update)
-routes.delete('/categories/:id', CategoryController.delete)
+routes.get('/categories', validateToken, CategoryController.index)
+routes.post('/categories', validateToken, CategoryController.store)
+routes.get('/categories/:id', validateToken, CategoryController.findById)
+routes.put('/categories/:id', validateToken, CategoryController.update)
+routes.delete('/categories/:id', validateToken, CategoryController.delete)
 
-routes.get('/semesters', SemesterController.index)
-routes.post('/semesters', SemesterController.store)
-routes.get('/semesters/:id', SemesterController.findById)
-routes.put('/semesters/:id', SemesterController.update)
-routes.delete('/semesters/:id', SemesterController.delete)
+routes.get('/semesters', validateToken, SemesterController.index)
+routes.post('/semesters', validateToken, SemesterController.store)
+routes.get('/semesters/:id', validateToken, SemesterController.findById)
+routes.put('/semesters/:id', validateToken, SemesterController.update)
+routes.delete('/semesters/:id', validateToken, SemesterController.delete)
 
-routes.get('/admins', AdminController.index)
-routes.post('/admins', AdminController.store)
-routes.get('/admins/:id', AdminController.findById)
-routes.put('/admins/:id', AdminController.update)
-routes.delete('/admins/:id', AdminController.delete)
+routes.get('/admins', validateToken, AdminController.index)
+routes.post('/admins', validateToken, AdminController.store)
+routes.get('/admins/:id', validateToken, AdminController.findById)
+routes.put('/admins/:id', validateToken, AdminController.update)
+routes.delete('/admins/:id', validateToken, AdminController.delete)
 
-routes.get('/subjects', SubjectController.index)
+routes.get('/subjects', validateToken, SubjectController.index)
 
-routes.get('/grades', GradeFreqController.index)
+routes.get('/grades', validateToken, GradeFreqController.index)
 
 routes.get('/logs', LogController.index)
+
+function validateToken (req, res, next) {
+  const token = req.headers.authorization
+
+  const decodedToken = jwt.decode(token)
+
+  if (!decodedToken) {
+    return res.status(401).json({
+      statusCode: 401,
+      error: 'Unauthorized'
+    })
+  }
+
+  return next()
+}
 
 module.exports = routes

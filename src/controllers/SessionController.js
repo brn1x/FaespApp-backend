@@ -6,6 +6,8 @@ require('dotenv').config()
 const axios = require('axios')
 const FormData = require('form-data')
 
+const jwt = require('../authentication/jwt')
+
 module.exports = {
   async create (req, res) {
     const { login, password } = req.body
@@ -32,6 +34,8 @@ module.exports = {
           }
         })
 
+        const token = jwt.sign({ login })
+
         return res.json({
           ra: response.data.perfilMobile.ra,
           name: response.data.perfilMobile.nome,
@@ -39,7 +43,7 @@ module.exports = {
           idAluno: response.data.perfilMobile.idAluno,
           avatar: response.data.perfilMobile.avatar,
           accessType: response.data.perfilMobile.tipoAcesso,
-          authorized: true
+          token
         })
       } else {
         return res.status(400).send({
@@ -49,10 +53,12 @@ module.exports = {
       }
     }
 
+    const token = jwt.sign({ login })
+
     return res.json({
       login: admin.login,
       access_level: admin.access_level,
-      token: true
+      token
     })
   }
 }
