@@ -41,8 +41,8 @@ module.exports = {
       end_subscription_date
     })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Config Date ID[${configDate.id}] created`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Config Date ID[${configDate.id}] created`, adminLogin)
 
     return res.json(configDate)
   },
@@ -68,8 +68,8 @@ module.exports = {
 
     await configDate.update({ init_create_date, end_create_date, init_subscription_date, end_subscription_date })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Config Date ID[${configDate.id}] updated`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Config Date ID[${configDate.id}] updated`, adminLogin)
 
     return res.json(configDate)
   },
@@ -88,8 +88,8 @@ module.exports = {
 
     await configDate.update({ status: 'I' })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Config Date ID[${configDate.id}] inactivated`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Config Date ID[${configDate.id}] inactivated`, adminLogin)
 
     return res.status(204).send()
   }

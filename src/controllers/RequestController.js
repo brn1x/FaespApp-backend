@@ -11,8 +11,8 @@ module.exports = {
       status: 'A'
     })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Group "${group.name.toUpperCase()}" accepted`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Group "${group.name.toUpperCase()}" accepted`, adminLogin)
 
     return res.json(group)
   },
@@ -26,8 +26,8 @@ module.exports = {
       status: 'R'
     })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Group "${group.name.toUpperCase()}" refused`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Group "${group.name.toUpperCase()}" refused`, adminLogin)
 
     return res.json(group)
   },

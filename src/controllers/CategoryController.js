@@ -30,8 +30,8 @@ module.exports = {
 
     const category = await Category.create({ name })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Category "${category.name.toUpperCase()}" created`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Category "${category.name.toUpperCase()}" created`, adminLogin)
 
     return res.json(category)
   },
@@ -50,8 +50,8 @@ module.exports = {
 
     await category.update({ status: 'I' })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Category "${category.name.toUpperCase()}" inativated`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Category "${category.name.toUpperCase()}" inativated`, adminLogin)
 
     return res.status(204).send()
   },
@@ -72,8 +72,8 @@ module.exports = {
 
     await category.update({ name })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Category "${category.name.toUpperCase()}" updated`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Category "${category.name.toUpperCase()}" updated`, adminLogin)
 
     return res.json(category)
   }

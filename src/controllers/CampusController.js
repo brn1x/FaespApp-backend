@@ -7,8 +7,8 @@ module.exports = {
 
     const campus = await Campus.create({ name })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Campus "${campus.name.toUpperCase()}" created`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Campus "${campus.name.toUpperCase()}" created`, adminLogin)
 
     return res.json(campus)
   },
@@ -52,8 +52,8 @@ module.exports = {
 
     await campus.update({ name })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Campus "${campus.name.toUpperCase()}" updated`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Campus "${campus.name.toUpperCase()}" updated`, adminLogin)
 
     return res.json(campus)
   },
@@ -72,8 +72,8 @@ module.exports = {
 
     await campus.update({ status: 'I' })
 
-    const admin_id = req.headers['x-logged-user']
-    await LogController.store(`Campus "${campus.name.toUpperCase()}" inactated`, admin_id)
+    const adminLogin = req.headers['x-logged-user']
+    await LogController.store(`Campus "${campus.name.toUpperCase()}" inactated`, adminLogin)
 
     return res.status(204).send()
   }

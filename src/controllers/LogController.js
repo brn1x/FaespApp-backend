@@ -30,8 +30,8 @@ module.exports = {
     return res.json(logs)
   },
 
-  async store (log, id) {
-    const admin = await Admin.findOne({ where: { id } })
+  async store (log, adminLogin) {
+    const admin = await Admin.findOne({ where: { login: adminLogin } })
 
     if (!admin) {
       return
@@ -39,7 +39,7 @@ module.exports = {
 
     await Log.create({
       log,
-      admin_id: id
+      admin_id: admin.id
     })
   }
 }
