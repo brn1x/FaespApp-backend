@@ -38,9 +38,9 @@ routes.post(
       qtt_max_students: Joi.number().required(),
       qtt_meetings: Joi.number().required(),
       period: Joi.string().required().max(1),
-      category_id: Joi.number().required().max(1),
-      semester_id: Joi.number().required().max(1),
-      campus_id: Joi.number().required().max(1)
+      category_id: Joi.number().required(),
+      semester_id: Joi.number().required(),
+      campus_id: Joi.number().required()
     })
   }, {
     abortEarly: false
@@ -60,9 +60,9 @@ routes.put(
       qtt_max_students: Joi.number().required(),
       qtt_meetings: Joi.number().required(),
       period: Joi.string().required().max(1),
-      category_id: Joi.number().required().max(1),
-      semester_id: Joi.number().required().max(1),
-      campus_id: Joi.number().required().max(1)
+      category_id: Joi.number().required(),
+      semester_id: Joi.number().required(),
+      campus_id: Joi.number().required()
     })
   }, {
     abortEarly: false
