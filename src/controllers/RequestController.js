@@ -1,5 +1,7 @@
 const Group = require('../models/Group')
+const Student = require('../models/Student')
 const LogController = require('../controllers/LogController')
+const axios = require('axios')
 
 module.exports = {
   async accept (req, res) {
@@ -7,12 +9,29 @@ module.exports = {
 
     const group = await Group.findByPk(id)
 
-    group.update({
+    await group.update({
       status: 'A'
     })
 
     const adminLogin = req.headers['x-logged-user']
     await LogController.store(`Group "${group.name.toUpperCase()}" accepted`, adminLogin)
+
+    const student = await Student.findOne({ where: { ra: group.dataValues.ra_group_owner } })
+
+    await student.addGroups(group)
+
+    const data = {
+      to: student.dataValues.token,
+      sound: 'default',
+      title: 'Requisição de Grupo Aceita!',
+      body: `Grupo ${group.dataValues.name} foi aprovado!`,
+      data: {
+        data: `Grupo ${group.dataValues.name} criado!`
+      },
+      _displayInForeground: true
+    }
+
+    await axios.default.post('https://exp.host/--/api/v2/push/send', data)
 
     return res.json(group)
   },
@@ -28,6 +47,21 @@ module.exports = {
 
     const adminLogin = req.headers['x-logged-user']
     await LogController.store(`Group "${group.name.toUpperCase()}" refused`, adminLogin)
+
+    const student = await Student.findOne({ where: { ra: group.dataValues.ra_group_owner } })
+
+    const data = {
+      to: student.dataValues.token,
+      sound: 'default',
+      title: 'Requisição de Grupo Reprovada!',
+      body: `Grupo ${group.dataValues.name} foi reprovado!`,
+      data: {
+        data: `Grupo ${group.dataValues.name} foi reprovado!`
+      },
+      _displayInForeground: true
+    }
+
+    await axios.default.post('https://exp.host/--/api/v2/push/send', data)
 
     return res.json(group)
   },

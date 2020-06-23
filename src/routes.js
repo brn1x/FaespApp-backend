@@ -14,6 +14,7 @@ const SemesterController = require('./controllers/SemesterController')
 const AdminController = require('./controllers/AdminController')
 const SubjectController = require('./controllers/SubjectController')
 const GradeFreqController = require('./controllers/GradeFreqController')
+const NotificationController = require('./controllers/NotificationController')
 
 const LogController = require('./controllers/LogController')
 
@@ -275,6 +276,8 @@ routes.get('/subjects', validateToken, SubjectController.index) // DISCIPLINAS
 routes.get('/grades', validateToken, GradeFreqController.index) // NOTAS
 
 routes.get('/logs', LogController.index) // LOGS
+
+routes.post('/notification/token', validateToken, NotificationController.store)
 
 // ==================== TOKEN VALIDATION ON ROUTES ====================
 function validateToken (req, res, next) {

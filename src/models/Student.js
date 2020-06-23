@@ -6,7 +6,8 @@ class Student extends Model {
       ra: DataTypes.STRING,
       name: DataTypes.STRING,
       student_id: DataTypes.STRING,
-      status: DataTypes.STRING
+      status: DataTypes.STRING,
+      token: DataTypes.STRING
     }, {
       sequelize
     })

@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      token: {
+        type: Sequelize.STRING,
+        defaultValue: null
+      },
       status: {
         type: Sequelize.STRING(1),
         allowNull: false,
