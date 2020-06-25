@@ -40,7 +40,8 @@ routes.post(
       qtt_meetings: Joi.number().required(),
       period: Joi.string().required().max(1),
       category_id: Joi.number().required(),
-      campus_id: Joi.number().required()
+      campus_id: Joi.number().required(),
+      status: Joi.string().min(1).max(1)
     })
   }, {
     abortEarly: false
@@ -61,7 +62,8 @@ routes.put(
       qtt_meetings: Joi.number().required(),
       period: Joi.string().required().max(1),
       category_id: Joi.number().required(),
-      campus_id: Joi.number().required()
+      campus_id: Joi.number().required(),
+      status: Joi.string().min(1).max(1)
     })
   }, {
     abortEarly: false
