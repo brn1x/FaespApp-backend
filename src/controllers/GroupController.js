@@ -59,17 +59,16 @@ module.exports = {
       include: [
         {
           association: 'campus',
-          attributes: ['id', 'name'],
-          where: { status: 'A' }
-        },
-        {
-          association: 'semester',
           attributes: ['id', 'name']
         },
         {
-          association: 'category',
+          association: 'semester',
           attributes: ['id', 'name'],
           where: { status: 'A' }
+        },
+        {
+          association: 'category',
+          attributes: ['id', 'name']
         },
         {
           association: 'students',
@@ -100,17 +99,16 @@ module.exports = {
       include: [
         {
           association: 'campus',
-          attributes: ['id', 'name'],
-          where: { status: 'A' }
-        },
-        {
-          association: 'semester',
           attributes: ['id', 'name']
         },
         {
-          association: 'category',
+          association: 'semester',
           attributes: ['id', 'name'],
           where: { status: 'A' }
+        },
+        {
+          association: 'category',
+          attributes: ['id', 'name']
         },
         {
           association: 'students',
@@ -140,9 +138,9 @@ module.exports = {
         'status'
       ],
       include: [
-        { association: 'campus', attributes: ['id', 'name'], where: { status: 'A' } },
-        { association: 'semester', attributes: ['id', 'name'] },
-        { association: 'category', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'campus', attributes: ['id', 'name'] },
+        { association: 'semester', attributes: ['id', 'name'], where: { status: 'A' } },
+        { association: 'category', attributes: ['id', 'name'] },
         { association: 'students', attributes: ['id', 'name'], through: { attributes: [] } }
       ],
       where: { id, status: 'A' }

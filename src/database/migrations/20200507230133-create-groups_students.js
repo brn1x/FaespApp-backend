@@ -6,12 +6,16 @@ module.exports = {
       group_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'groups', key: 'id' }
+        references: { model: 'groups', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
       student_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'students', key: 'id' }
+        references: { model: 'students', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
       created_at: {
         type: Sequelize.DATE,

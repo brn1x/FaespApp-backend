@@ -20,7 +20,9 @@ module.exports = {
       category_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'categories', key: 'id' }
+        references: { model: 'categories', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
       ra_group_owner: {
         type: Sequelize.STRING,
@@ -41,12 +43,16 @@ module.exports = {
       campus_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'campus', key: 'id' }
+        references: { model: 'campus', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
       semester_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'semesters', key: 'id' }
+        references: { model: 'semesters', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
       period: {
         type: Sequelize.STRING(1),
