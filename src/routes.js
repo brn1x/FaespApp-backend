@@ -34,6 +34,7 @@ routes.post(
     body: Joi.object().keys({
       name: Joi.string().required(),
       description: Joi.string().required(),
+      ra_group_owner: Joi.string().min(11).max(11),
       qtt_min_students: Joi.number().required(),
       qtt_max_students: Joi.number().required(),
       qtt_meetings: Joi.number().required(),
@@ -54,6 +55,7 @@ routes.put(
     body: Joi.object().keys({
       name: Joi.string().required(),
       description: Joi.string().required(),
+      ra_group_owner: Joi.string().min(11).max(11),
       qtt_min_students: Joi.number().required(),
       qtt_max_students: Joi.number().required(),
       qtt_meetings: Joi.number().required(),
@@ -211,27 +213,9 @@ routes.delete('/categories/:id', validateToken, CategoryController.delete)
 
 // ==================== SEMESTERS ====================
 routes.get('/semesters', validateToken, SemesterController.index)
-routes.post(
-  '/semesters',
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required()
-    })
-  }),
-  validateToken,
-  SemesterController.store
-)
+routes.post('/semesters', validateToken, SemesterController.store)
 routes.get('/semesters/:id', validateToken, SemesterController.findById)
-routes.put(
-  '/semesters/:id',
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required()
-    })
-  }),
-  validateToken,
-  SemesterController.update
-)
+routes.put('/semesters/:id', validateToken, SemesterController.update)
 routes.delete('/semesters/:id', validateToken, SemesterController.delete)
 
 // ==================== ADMINS ====================
@@ -277,6 +261,7 @@ routes.post('/notification/token', validateToken, NotificationController.store)
 
 // ==================== TOKEN VALIDATION ON ROUTES ====================
 function validateToken (req, res, next) {
+  console.log('Validation Token!')
   const token = req.headers.authorization
 
   const decodedToken = jwt.decode(token)
