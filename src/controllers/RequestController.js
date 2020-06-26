@@ -18,20 +18,23 @@ module.exports = {
 
     const student = await Student.findOne({ where: { ra: group.dataValues.ra_group_owner } })
 
-    await student.addGroups(group)
+    if (student) {
+      await student.addGroups(group)
 
-    const data = {
-      to: student.dataValues.token,
-      sound: 'default',
-      title: 'Requisição de Grupo Aceita!',
-      body: `Grupo ${group.dataValues.name} foi aprovado!`,
-      data: {
-        data: `Grupo ${group.dataValues.name} criado!`
-      },
-      _displayInForeground: true
+      if (student.dataValues.token) {
+        const data = {
+          to: student.dataValues.token,
+          sound: 'default',
+          title: 'Requisição de Grupo Aceita!',
+          body: `Grupo ${group.dataValues.name} foi aprovado!`,
+          data: {
+            data: `Grupo ${group.dataValues.name} criado!`
+          },
+          _displayInForeground: true
+        }
+        await axios.default.post('https://exp.host/--/api/v2/push/send', data)
+      }
     }
-
-    await axios.default.post('https://exp.host/--/api/v2/push/send', data)
 
     return res.json(group)
   },
@@ -50,18 +53,19 @@ module.exports = {
 
     const student = await Student.findOne({ where: { ra: group.dataValues.ra_group_owner } })
 
-    const data = {
-      to: student.dataValues.token,
-      sound: 'default',
-      title: 'Requisição de Grupo Reprovada!',
-      body: `Grupo ${group.dataValues.name} foi reprovado!`,
-      data: {
-        data: `Grupo ${group.dataValues.name} foi reprovado!`
-      },
-      _displayInForeground: true
+    if (student && student.dataValues.token) {
+      const data = {
+        to: student.dataValues.token,
+        sound: 'default',
+        title: 'Requisição de Grupo Reprovada!',
+        body: `Grupo ${group.dataValues.name} foi reprovado!`,
+        data: {
+          data: `Grupo ${group.dataValues.name} foi reprovado!`
+        },
+        _displayInForeground: true
+      }
+      await axios.default.post('https://exp.host/--/api/v2/push/send', data)
     }
-
-    await axios.default.post('https://exp.host/--/api/v2/push/send', data)
 
     return res.json(group)
   },
