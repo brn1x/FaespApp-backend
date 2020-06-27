@@ -73,7 +73,7 @@ module.exports = {
     await campus.update({ status: 'I' })
 
     const adminLogin = req.headers['x-logged-user']
-    await LogController.store(`Campus "${campus.name.toUpperCase()}" inactated`, adminLogin)
+    await LogController.store(`Campus "${campus.name.toUpperCase()}" inactivated`, adminLogin)
 
     return res.status(204).send()
   }
