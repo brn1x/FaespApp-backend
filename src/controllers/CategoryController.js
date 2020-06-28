@@ -51,7 +51,7 @@ module.exports = {
     await category.update({ status: 'I' })
 
     const adminLogin = req.headers['x-logged-user']
-    await LogController.store(`Category "${category.name.toUpperCase()}" inativated`, adminLogin)
+    await LogController.store(`Category "${category.name.toUpperCase()}" inactivated`, adminLogin)
 
     return res.status(204).send()
   },

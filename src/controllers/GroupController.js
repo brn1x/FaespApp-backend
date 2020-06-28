@@ -1,5 +1,6 @@
 const Group = require('../models/Group')
 const Semester = require('../models/Semester')
+const LogController = require('../controllers/LogController')
 const { Op } = require('sequelize')
 
 const validateCreateDate = require('../utils/validateCreateDate')
@@ -156,7 +157,7 @@ module.exports = {
     return res.json(group)
   },
 
-  async store (req, res) {
+  async storeUser (req, res) {
     validateCreateDate()
       .then(async response => {
         if (response === true) {
@@ -176,7 +177,7 @@ module.exports = {
             order: [['id', 'DESC']],
             where: { status: 'A' }
           })
-          const ra_group_owner = req.headers['x-logged-user'] || req.body.ra_group_owner
+          const ra_group_owner = req.headers['x-logged-user']
 
           const group = await Group.create({
             name,
@@ -191,6 +192,56 @@ module.exports = {
             period,
             status
           })
+
+          return res.json(group)
+        } else {
+          return res.status(405).send({
+            statusCode: 405,
+            error: 'Method not allowed'
+          })
+        }
+      })
+  },
+
+  async storeAdmin (req, res) {
+    validateCreateDate()
+      .then(async response => {
+        if (response === true) {
+          const {
+            name,
+            description,
+            category_id,
+            ra_group_owner,
+            qtt_min_students,
+            qtt_max_students,
+            qtt_meetings,
+            campus_id,
+            period,
+            status = 'P'
+          } = req.body
+
+          const semester = await Semester.findOne({
+            order: [['id', 'DESC']],
+            where: { status: 'A' }
+          })
+
+          const group = await Group.create({
+            name,
+            description,
+            category_id,
+            ra_group_owner,
+            qtt_min_students,
+            qtt_max_students,
+            qtt_meetings,
+            campus_id,
+            semester_id: semester.id,
+            period,
+            status
+          })
+
+          const adminLogin = req.headers['x-logged-user']
+
+          await LogController.store(`Group request "${group.name.toUpperCase()}" created`, adminLogin)
 
           return res.json(group)
         } else {
@@ -261,6 +312,10 @@ module.exports = {
       period
     })
 
+    const adminLogin = req.headers['x-logged-user']
+
+    await LogController.store(`Group ${group.name.toUpperCase()} updated`, adminLogin)
+
     return res.json(group)
   },
 
@@ -277,6 +332,10 @@ module.exports = {
     }
 
     await group.update({ status: 'I' })
+
+    const adminLogin = req.headers['x-logged-user']
+
+    await LogController.store(`Group ${group.name.toUpperCase()} inactivated`, adminLogin)
 
     return res.status(204).send()
   }

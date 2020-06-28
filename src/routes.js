@@ -46,7 +46,28 @@ routes.post(
   }, {
     abortEarly: false
   }),
-  GroupController.store
+  GroupController.storeUser
+)
+routes.post(
+  '/groups/admin',
+  validateToken,
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      ra_group_owner: Joi.string().min(11).max(11),
+      qtt_min_students: Joi.number().required(),
+      qtt_max_students: Joi.number().required(),
+      qtt_meetings: Joi.number().required(),
+      period: Joi.string().required().max(1),
+      category_id: Joi.number().required(),
+      campus_id: Joi.number().required(),
+      status: Joi.string().min(1).max(1)
+    })
+  }, {
+    abortEarly: false
+  }),
+  GroupController.storeAdmin
 )
 routes.get('/groups/:id', validateToken, GroupController.findById)
 routes.put(
